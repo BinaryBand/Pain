@@ -2,7 +2,7 @@ from cv2 import line, namedWindow, setMouseCallback, imshow, waitKey, destroyAll
 from numpy import full, uint8
 from file_handler import open_file, save_file
 
-
+"HI EVERYBODY!!!!"
 """
 Previous mouse position.
 """
