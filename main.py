@@ -4,14 +4,14 @@ from file_handler import open_file, save_file
 
 
 """
-Previous mouse position
+Previous mouse position.
 """
 class Mouse:
     x, y, click = None, None, None
 
 
 """
-Draw a line
+Draw a line.
 """
 def draw_line(image, x1, y1, x2, y2, thickness=1, color=(0, 0, 0)):
 
@@ -20,7 +20,7 @@ def draw_line(image, x1, y1, x2, y2, thickness=1, color=(0, 0, 0)):
 
 
 """
-Mouse callback function
+Mouse callback function.
 """
 def draw(event, x, y, flags, param):
 
@@ -35,7 +35,7 @@ def draw(event, x, y, flags, param):
 
 
 """
-Main function
+Main function.
 """
 def main():
 
