@@ -12,12 +12,12 @@ class Mouse:
 
 """
 Drawing element.
+types
 """
 class Canvas:
     def __init__(self, x, y, width, height):
         self.x, self.y = x, y
-        self.width = width
-        self.height = height
+        self.width, self.height = width, height
         self.canvas = full((height, width, 3), (255, 255, 255), dtype=uint8)
 
     # Detect mouse clicks and allow user to draw
@@ -27,6 +27,14 @@ class Canvas:
     # Draw this object on screen
     def draw(self, canvas):
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.canvas
+
+
+# """
+# A clickable object.
+# """
+# class Button:
+#     def __init__(self):
+
 
 
 """
@@ -76,7 +84,7 @@ def main():
     # canvas = open_file()
 
     # Create a window
-    cv2.namedWindow(title, cv2.WND_PROP_FULLSCREEN)
+    cv2.namedWindow(title, cv2.WINDOW_KEEPRATIO)
     
     # # Set full screen
     # setWindowProperty(title, WND_PROP_FULLSCREEN, WINDOW_FULLSCREEN)
