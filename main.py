@@ -4,20 +4,6 @@ from numpy import full, uint8
 
 
 """
-Change color to green.
-"""
-def green():
-    Mouse.color = (0, 255, 0)
-
-
-"""
-Change color to red.
-"""
-def red():
-    Mouse.color = (0, 0, 255)
-
-
-"""
 Add objects to screen
 """
 def populate_frame():
@@ -29,8 +15,6 @@ def populate_frame():
     elements.append(canvas)
     elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
     elements.append(Button(120, 10, 100, 50, "Export", canvas.export))
-    elements.append(Button(230, 10, 100, 50, "Green", green))
-    elements.append(Button(340, 10, 100, 50, "Red", red))
 
     return elements
 
