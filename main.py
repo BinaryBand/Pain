@@ -43,7 +43,8 @@ def main():
     fps = 30                                                # Frames per second
 
     screen = full((480, 640, 3), (0, 0, 0), dtype=uint8)    # Frame to draw our object
-    cv2.namedWindow(title, cv2.WINDOW_KEEPRATIO)            # Create a window
+    cv2.namedWindow(title)     # Create a window
+    # cv2.resizeWindow('image', 480, 1000)
 
     elements = populate_frame()
 
