@@ -1,5 +1,6 @@
 from cv2 import imread, imwrite
 import tkinter as tk
+tk.Tk().withdraw()
 from tkinter.filedialog import askopenfilename, asksaveasfile
 import threading
 
@@ -8,7 +9,7 @@ import threading
 Open a window to ask user where the file should be saved.
 """
 def get_file_location():
-    tk.Tk().withdraw()
+
     return askopenfilename()
 
 
