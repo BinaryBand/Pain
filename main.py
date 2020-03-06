@@ -1,105 +1,59 @@
 import cv2
+from objects import Mouse, Canvas, Button
 from numpy import full, uint8
-from file_handler import open_file, save_file
 
 "HI EVERYBODY!!!! Hello!"
 """
-Previous mouse position.
+Add objects to screen
 """
-class Mouse:
-    x, y, click = None, None, None
+def populate_frame():
 
+    # Create elements to place on the screen
+    canvas = Canvas(0, 70, 640, 410)
 
-"""
-Drawing element.
-types
-"""
-class Canvas:
-    def __init__(self, x, y, width, height):
-        self.x, self.y = x, y
-        self.width, self.height = width, height
-        self.canvas = full((height, width, 3), (255, 255, 255), dtype=uint8)
+    elements = []
+    elements.append(canvas)
+    elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
+    elements.append(Button(120, 10, 100, 50, "Export", canvas.export))
 
-    # Detect mouse clicks and allow user to draw
-    def update(self, x, y):
-        draw_line(self.canvas, Mouse.x - self.x, Mouse.y - self.y, x - self.x, y - self.y, 2)
-
-    # Draw this object on screen
-    def draw(self, canvas):
-        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.canvas
-
-
-# """
-# A clickable object.
-# """
-# class Button:
-#     def __init__(self):
-
-
-
-"""
-Draw text to the screen.
-"""
-def write_text(frame, text, x, y, color=(255, 255, 255), size=1):
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    lineType = 2
-    cv2.putText(frame, text, (x, y), font, size, color, lineType)
-
-
-"""
-Draw a line.
-"""
-def draw_line(image, x1, y1, x2, y2, thickness=1, color=(0, 0, 0)):
-
-    # Draw a line on the image
-    cv2.line(image, (x1, y1), (x2, y2), color, thickness)
+    return elements
 
 
 """
 Mouse callback function.
 """
-def draw(event, x, y, flags, objects):
+def mouse_event(event, x, y, flags, objects):
 
-    # If mouse is clicked
-    if flags == 1 and Mouse.x is not None:
-
-        for obj in objects:
-            obj.update(x, y)
+    for obj in objects:
+        obj.update(x, y, flags == 1)
 
     # Set the previous mouse position
-    Mouse.x, Mouse.y, Mouse.click = x, y, flags == 1
+    Mouse.x = x
+    Mouse.y = y
+    Mouse.press = Mouse.click != (flags == 1)
+    Mouse.click = flags == 1
 
 
 """
 Main function.
 """
 def main():
-
-    # Windows title
-    title = "MacroSoup Pain"
-    fps = 30
-
-    # Frame to place objects on
-    screen = full((480, 640, 3), (0, 0, 0), dtype=uint8)
-    # canvas = open_file()
-
-    # Create a window
-    cv2.namedWindow(title, cv2.WINDOW_KEEPRATIO)
     
-    # # Set full screen
-    # setWindowProperty(title, WND_PROP_FULLSCREEN, WINDOW_FULLSCREEN)
+    title = "MacroSoup Pain"                                # Windows title
+    fps = 30                                                # Frames per second
 
-    # Create objects to place on the screen
-    objects = []
-    objects.append(Canvas(100, 100, 540, 380))
+    screen = full((480, 640, 3), (0, 0, 0), dtype=uint8)    # Frame to draw our object
+    cv2.namedWindow(title, cv2.WINDOW_KEEPRATIO)            # Create a window
 
-    # Execute the 'draw' function each time a mouse click is detected
-    cv2.setMouseCallback(title, draw, objects)
+    elements = populate_frame()
+
+    # Execute the 'mouse_event' function each time a mouse event is detected
+    cv2.setMouseCallback(title, mouse_event, elements)
 
     # Application loop
     while True:
 
-        for obj in objects:
+        for obj in elements:
             obj.draw(screen)
 
         # Display image
@@ -112,11 +66,8 @@ def main():
         if key == 27:
             break
 
-    # Close the window
+    # Close the window upon exiting application loop
     cv2.destroyAllWindows()
-
-    # # Save screen to a file
-    # save_file(screen)
 
 
 if __name__ == "__main__":
