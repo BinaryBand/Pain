@@ -9,7 +9,10 @@ import threading
 Open a window to ask user where the file should be saved.
 """
 def get_file_location():
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/origin/master
     return askopenfilename()
 
 
