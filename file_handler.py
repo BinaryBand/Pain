@@ -36,4 +36,4 @@ def save_file(image):
     location = set_file_location()
     
     if location is not None:
-        imwrite(f"{location}.png", image)
+        imwrite(location, image)

@@ -15,6 +15,7 @@ def populate_frame():
     elements.append(canvas)
     elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
     elements.append(Button(120, 10, 100, 50, "Export", canvas.export))
+    elements.append(Button(230, 10, 100, 50, "Export", canvas.export))
 
     return elements
 
