@@ -1,5 +1,6 @@
 from cv2 import imread, imwrite
 import tkinter as tk
+tk.Tk().withdraw()
 from tkinter.filedialog import askopenfilename, asksaveasfile
 import threading
 
