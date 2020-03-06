@@ -8,7 +8,6 @@ import threading
 Open a window to ask user where the file should be saved.
 """
 def get_file_location():
-    tk.Tk().withdraw()
     return askopenfilename()
 
 
