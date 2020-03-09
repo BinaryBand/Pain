@@ -62,8 +62,8 @@ class Button:
 
     # Draw button on screen.
     def draw(self, canvas):
-        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (250, 250, 250) if self.mouse_hover else (225, 225, 225)
-        write_text(canvas, self.text, self.x + int((self.width // len(self.text)) - 1.6 * len(self.text)), self.y  + (self.height // 2) , self.text_size, 2)
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (250, 250, 250) if self.mouse_hover else (200, 200, 200)
+        write_text(canvas, self.text, self.x + int((self.width // len(self.text)) - 1.6 * len(self.text)), self.y  + int(1.5 * (self.height // 2)) , self.text_size, 2)
 
 class Color_Button:
     def __init__(self, x, y, width, height,color, function):
@@ -108,7 +108,7 @@ class Menu_bar:
         self.width, self.height = width, height
 
     def draw(self, canvas):
-        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (100,100,100)
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (220,220,220)
 
     def update(self,x,y,clicked):
         if(self.width != cv2.WINDOW_NORMAL):
