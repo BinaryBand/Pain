@@ -2,7 +2,7 @@ import cv2
 from objects import Mouse, Canvas, Button
 from numpy import full, uint8
 
-"HI EVERYBODY!!!! Hello!"
+
 """
 Add objects to screen
 """
@@ -58,7 +58,7 @@ def main():
             obj.draw(screen)
 
         # Display image
-        cv2.imshow(title, screen)
+        cv2.imshow(title, cv2.blur(screen,(1, 1)))
 
         # Wait to display next image and get keystrokes
         key = cv2.waitKey(1000 // fps) & 0xFF

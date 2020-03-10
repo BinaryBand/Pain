@@ -1,11 +1,11 @@
-from cv2 import line, putText, FONT_HERSHEY_SIMPLEX
+from cv2 import line, putText, FONT_HERSHEY_COMPLEX_SMALL
 
 
 """
 Draw text to the screen.
 """
 def write_text(frame, text, x, y, size=1, weight=1, color=(0, 0, 0)):
-    font = FONT_HERSHEY_SIMPLEX
+    font = FONT_HERSHEY_COMPLEX_SMALL
     putText(frame, text, (x, y), font, size, color, weight)
 
 

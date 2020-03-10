@@ -61,4 +61,4 @@ class Button:
     # Draw button on screen.
     def draw(self, canvas):
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (250, 250, 250) if self.mouse_hover else (225, 225, 225)
-        write_text(canvas, self.text, self.x, self.y + 24, 1, 2)
+        write_text(canvas, self.text, self.x, self.y + 24, 0.75, 1)
