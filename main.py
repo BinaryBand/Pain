@@ -1,5 +1,5 @@
 import cv2
-from objects import Mouse, Canvas, Button, Menu_bar,Color_Button,Current_Color,Drop_down
+from objects import Mouse, Canvas, Button, Menu_bar,Color_Button,CurrentColor,Drop_down
 from numpy import full, uint8
 
 
@@ -20,14 +20,14 @@ def populate_frame():
     # Create elements to place on the screen
     canvas = Canvas(0, 70, 640, 410) ## must remain item 0 in OBJ array
 
-    # Button(x,y,width,height,text,texsize,function)
+    # Button(x, y, width, height, text, texsize, function)
     elements = []
     elements.append(canvas)
     elements.append(Menu_bar(canvas))
 
     # elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
     elements.append(Button(10, 10, 50, 25, "Save", 0.75, canvas.export))
-    elements.append(Button(10, 40, 50, 25, "Load" , 0.75, None))
+    elements.append(Button(10, 40, 50, 25, "Load" , 0.75, canvas.load))
 
     # color pallet default set (BGR)
     # Color_Button(x,y,width,height,color,function)  
@@ -52,7 +52,7 @@ def populate_frame():
     elements.append(Drop_down(80,10,70,20,["small","medium","large"], font_size, 0.5 ,canvas))
 
     #This object displays the currently selected color
-    elements.append(Current_Color(180,10,35,35))
+    elements.append(CurrentColor(180,10,35,35))
 
     return elements
 
@@ -91,6 +91,8 @@ def main():
 
     # Application loop
     while cv2.getWindowProperty(title, cv2.WND_PROP_VISIBLE) != 0:
+
+        screen[:] = (240, 240, 240)
 
         for obj in elements:
             obj.draw(screen)
