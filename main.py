@@ -15,15 +15,15 @@ def font_size(size):
 """
 Add objects to screen
 """
-def populate_frame():
+def populate_frame(width):
 
     # Create elements to place on the screen
-    canvas = Canvas(0, 70, 640, 410) ## must remain item 0 in OBJ array
+    canvas = Canvas(5, 75, 600, 400) ## must remain item 0 in OBJ array
 
     # Button(x,y,width,height,text,texsize,function)
     elements = []
     elements.append(canvas)
-    elements.append(MenuBar(canvas))
+    elements.append(MenuBar(canvas, width))
 
     # Elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
     elements.append(Button(10, 10, 50, 25, "Save", 0.75, canvas.export))
@@ -59,16 +59,30 @@ def populate_frame():
 """
 Mouse callback function.
 """
-def mouse_event(event, x, y, flags, objects):
+def mouse_event(event, x, y, flags, param):
 
-    for obj in objects:
-        obj.update(x, y, flags == 1) # canvas
+    elements, screen = param
+
+    for obj in elements:
+        obj.update(x, y, flags == 1)
 
     # Set the previous mouse position
     Mouse.x = x
     Mouse.y = y
-    Mouse.press = Mouse.click != (flags == 1) and not Mouse.click
+    Mouse.press = Mouse.click != (flags == 1) and Mouse.click
+    Mouse.release = Mouse.click != (flags == 1) and not Mouse.click
     Mouse.click = flags == 1
+
+    draw(elements, screen)
+
+
+"""
+Draw all elements on screen.
+"""
+def draw(elements, screen):
+    screen[:] = (225, 225, 225)
+    for obj in elements:
+        obj.draw(screen)
 
 
 """
@@ -82,25 +96,25 @@ def main():
     screen = full((480, 640, 3), (0, 0, 0), dtype=uint8)    # Frame to draw our object
     cv2.namedWindow(title)                                  # Create a window
 
-    elements, canvas = populate_frame()
+    elements, canvas = populate_frame(635)
 
     # Execute the 'mouse_event' function each time a mouse event is detected
-    cv2.setMouseCallback(title, mouse_event, elements)
+    cv2.setMouseCallback(title, mouse_event, (elements, screen))
+
+    draw(elements, screen)
 
     # Application loop
     while cv2.getWindowProperty(title, cv2.WND_PROP_VISIBLE) != 0:
 
-        for obj in elements:
-            obj.draw(screen)
-
         # Display image
-        cv2.imshow(title, cv2.blur(screen,(1, 1)))
+        cv2.imshow(title, screen)
 
         # Wait to display next image and get keystrokes
         key = cv2.waitKey(1000 // fps) & 0xFF
 
         if key == ord("z"):
             canvas.undo()
+            draw(elements, screen)
 
     # Close the window upon exiting application loop
     cv2.destroyWindow(title)
