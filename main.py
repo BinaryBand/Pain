@@ -1,5 +1,5 @@
 import cv2
-from objects import Mouse, Canvas, Button, Menu_bar,Color_Button,Current_Color
+from objects import Mouse, Canvas, Button, Menu_bar,Color_Button,Current_Color,Drop_down
 from numpy import full, uint8
 
 
@@ -9,17 +9,22 @@ Change mouse Color to new color.
 def set_color(color):
     Mouse.color = color
 
+def font_size(size):
+    Mouse.cursor_size = size + 1
+
 """
 Add objects to screen
 """
 def populate_frame():
 
     # Create elements to place on the screen
-    canvas = Canvas(0, 70, 640, 410)
+    canvas = Canvas(0, 70, 640, 410) ## must remain item 0 in OBJ array
+
     # Button(x,y,width,height,text,texsize,function)
     elements = []
     elements.append(canvas)
-    elements.append(Menu_bar(0,0,canvas.width, 70))
+    elements.append(Menu_bar(canvas))
+    
     # elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
     elements.append(Button(10, 10, 50, 25, "Save", 0.75, canvas.export))
     elements.append(Button(10, 40, 50, 25, "Load" , 0.75, None))
@@ -42,6 +47,10 @@ def populate_frame():
     elements.append(Color_Button(350,10,15,15,(255,0,0),set_color))         #Blue
     elements.append(Color_Button(370,30,15,15,(255,255,0),set_color))       #Light Blue
     elements.append(Color_Button(370,10,15,15,(160,0,0),set_color))         #Dark Blue
+    
+    #dropdown menu pencil size
+    elements.append(Drop_down(80,10,70,20,["small","medium","large"], font_size, 0.5 ,canvas))
+
 
     #This object displays the currently selected color
     elements.append(Current_Color(180,10,35,35))
@@ -55,7 +64,7 @@ Mouse callback function.
 def mouse_event(event, x, y, flags, objects):
 
     for obj in objects:
-        obj.update(x, y, flags == 1)
+        obj.update(x, y, flags == 1) # canvas
 
     # Set the previous mouse position
     Mouse.x = x
