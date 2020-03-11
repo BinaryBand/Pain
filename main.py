@@ -103,10 +103,6 @@ def main():
         # Wait to display next image and get keystrokes
         key = cv2.waitKey(1000 // fps) & 0xFF
 
-        # If escape key is pressed
-        if key == 27:
-            break
-
     # Close the window upon exiting application loop
     cv2.destroyWindow(title)
 

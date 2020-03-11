@@ -11,7 +11,7 @@ class Mouse:
     x, y = None, None
     click = False
     press = False
-    color = (0, 255, 0)
+    color = (0, 0, 0)
     cursor_size = 1
 
 
@@ -71,6 +71,7 @@ class Button:
     def draw(self, canvas):
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (200, 200, 200) if self.mouse_hover else (250, 250, 250)
         write_text(canvas, self.text, self.x + int((self.width // len(self.text)) - 1.6 * len(self.text)), self.y  + int(1.5 * (self.height // 2)) , self.text_size, 1)
+
 
 class Color_Button:
     def __init__(self, x, y, width, height,color, function):
