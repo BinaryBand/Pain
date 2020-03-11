@@ -90,16 +90,13 @@ def main():
     cv2.setMouseCallback(title, mouse_event, elements)
 
     # Application loop
-    while True:
-
-        if cv2.getWindowProperty(title, 0) < 0:
-            print("close")
+    while cv2.getWindowProperty(title, cv2.WND_PROP_VISIBLE) != 0:
 
         for obj in elements:
             obj.draw(screen)
 
         # Display image
-        cv2.imshow(title, cv2.blur(screen,(1, 1)))
+        cv2.imshow(title, screen)
 
         # Wait to display next image and get keystrokes
         key = cv2.waitKey(1000 // fps) & 0xFF
@@ -109,7 +106,7 @@ def main():
             break
 
     # Close the window upon exiting application loop
-    cv2.destroyAllWindows()
+    cv2.destroyWindow(title)
 
 
 if __name__ == "__main__":
