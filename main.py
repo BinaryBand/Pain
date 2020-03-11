@@ -92,6 +92,8 @@ def main():
     # Application loop
     while cv2.getWindowProperty(title, cv2.WND_PROP_VISIBLE) != 0:
 
+        screen[:] = (240, 240, 240)
+
         for obj in elements:
             obj.draw(screen)
 
