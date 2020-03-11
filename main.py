@@ -48,7 +48,7 @@ def populate_frame():
     elements.append(Color_Button(370,10,15,15,(160,0,0),set_color))         #Dark Blue
     
     #dropdown menu pencil size
-    elements.append(Drop_down(100,10,60,20,["small","medium","large"], font_size, 0.4 ,canvas))
+    elements.append(Drop_down(80,10,70,20,["small","medium","large"], font_size, 0.5 ,canvas))
 
 
     #This object displays the currently selected color
