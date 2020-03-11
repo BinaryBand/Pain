@@ -96,7 +96,7 @@ class CurrentColor:
         self.x, self.y = x, y
         self.width, self.height = width, height
         self.mouse_hover = False
-        self.color = (255,255,255)
+        self.color = (0, 0, 0)  ## color mouse is moved
 
     # Execute function on click.
     def update(self, x, y, clicked):
