@@ -1,13 +1,14 @@
 from cv2 import imread, imwrite
 import tkinter as tk
+tk.Tk().withdraw()
 from tkinter.filedialog import askopenfilename, asksaveasfile
+import threading
 
 
 """
 Open a window to ask user where the file should be saved.
 """
 def get_file_location():
-    tk.Tk().withdraw()
     return askopenfilename()
 
 
@@ -21,7 +22,7 @@ def set_file_location():
 """
 Open an image file from specified location.
 """
-def open_file():
+def open_file(_):
     location = get_file_location()
 
     if location is not None:
@@ -33,6 +34,6 @@ Save a file to a specific location.
 """
 def save_file(image):
     location = set_file_location()
-
+    
     if location is not None:
         imwrite(location, image)
