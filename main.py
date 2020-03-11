@@ -73,8 +73,6 @@ def mouse_event(event, x, y, flags, param):
     Mouse.release = Mouse.click != (flags == 1) and not Mouse.click
     Mouse.click = flags == 1
 
-    draw(elements, screen)
-
 
 """
 Draw all elements on screen.
@@ -105,6 +103,8 @@ def main():
 
     # Application loop
     while cv2.getWindowProperty(title, cv2.WND_PROP_VISIBLE) != 0:
+
+        draw(elements, screen)
 
         # Display image
         cv2.imshow(title, screen)

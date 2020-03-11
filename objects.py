@@ -35,7 +35,8 @@ class Canvas:
 
     # Draw this object on screen
     def draw(self, canvas):
-        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.canvas
+        canvas[self.y - 1: self.y + self.height + 1, self.x - 1: self.x + self.width + 1] = (0, 0, 0)   # Draw border
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.canvas                       # Draw image
 
     # Fill canvas with white
     def clear(self):
