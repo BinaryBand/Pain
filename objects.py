@@ -98,7 +98,7 @@ class Current_Color:
     # Draw Element on screen.
     def draw(self, canvas):
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.color
-        write_text(canvas, "Color", self.x , self.y + self.height + 10 , 0.4, 2)
+        write_text(canvas, "Color", self.x , self.y + self.height + 10 , 0.5, 1)
 
 
 """
@@ -122,7 +122,7 @@ class Drop_down:
         #don't display drop down when not clicked
         if self.clicked is False:
             canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (230, 230, 230) if self.mouse_hover else (250, 250, 250)
-            write_text(canvas, self.current_item, self.x , self.y + self.height // 2  + 4, self.text_size, 2)
+            write_text(canvas, self.current_item, self.x , self.y + self.height // 2  + 4, self.text_size, 1)
             #draw dropdown arrow
             canvas[self.y:self.y+self.height, self.x + self.width:self.x + self.width + 20] = (210, 210, 210) if self.mouse_hover else (180, 180, 180)
             write_text(canvas, "V",self.x + self.width + 6,self.y + self.height // 2  + 5, self.text_size, 2)
@@ -132,7 +132,7 @@ class Drop_down:
             canvas[self.y + self.height :self.y + (self.height * (len(self.item_list) + 1)),self.x:self.x + self.width] = (200,200,200)
             for items in self.item_list:
                 # write out the options in the dropdown menu
-                write_text(canvas, items, self.x + 4, self.y + ((offset + 1) * self.height) - self.height//2  + 4, self.text_size, 2)
+                write_text(canvas, items, self.x + 4, self.y + ((offset + 1) * self.height) - self.height//2  + 4, self.text_size, 1)
                 offset += 1
 
             #get the area for the dropdown menu.
