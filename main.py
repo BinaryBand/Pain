@@ -20,14 +20,14 @@ def populate_frame():
     # Create elements to place on the screen
     canvas = Canvas(0, 70, 640, 410) ## must remain item 0 in OBJ array
 
-    # Button(x, y, width, height, text, texsize, function)
+    # Button(x,y,width,height,text,texsize,function)
     elements = []
     elements.append(canvas)
     elements.append(Menu_bar(canvas))
 
     # elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
     elements.append(Button(10, 10, 50, 25, "Save", 0.75, canvas.export))
-    elements.append(Button(10, 40, 50, 25, "Load" , 0.75, canvas.load))
+    elements.append(Button(10, 40, 50, 25, "Load" , 0.75, None))
 
     # color pallet default set (BGR)
     # Color_Button(x,y,width,height,color,function)  
@@ -90,15 +90,16 @@ def main():
     cv2.setMouseCallback(title, mouse_event, elements)
 
     # Application loop
-    while cv2.getWindowProperty(title, cv2.WND_PROP_VISIBLE) != 0:
+    while True:
 
-        screen[:] = (240, 240, 240)
+        if cv2.getWindowProperty(title, 0) < 0:
+            print("close")
 
         for obj in elements:
             obj.draw(screen)
 
         # Display image
-        cv2.imshow(title, screen)
+        cv2.imshow(title, cv2.blur(screen,(1, 1)))
 
         # Wait to display next image and get keystrokes
         key = cv2.waitKey(1000 // fps) & 0xFF
@@ -108,7 +109,7 @@ def main():
             break
 
     # Close the window upon exiting application loop
-    cv2.destroyWindow(title)
+    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@ class Mouse:
     x, y = None, None
     click = False
     press = False
-    color = (0, 255, 0)
+    color = (0, 0, 0)  ## Default color: black
     cursor_size = 1
 
 
