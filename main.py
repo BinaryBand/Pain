@@ -53,7 +53,7 @@ def populate_frame():
     # This object displays the currently selected color
     elements.append(CurrentColor(180, 10, 35, 35))
 
-    return elements
+    return elements, canvas
 
 
 """
@@ -82,7 +82,7 @@ def main():
     screen = full((480, 640, 3), (0, 0, 0), dtype=uint8)    # Frame to draw our object
     cv2.namedWindow(title)                                  # Create a window
 
-    elements = populate_frame()
+    elements, canvas = populate_frame()
 
     # Execute the 'mouse_event' function each time a mouse event is detected
     cv2.setMouseCallback(title, mouse_event, elements)
@@ -98,6 +98,9 @@ def main():
 
         # Wait to display next image and get keystrokes
         key = cv2.waitKey(1000 // fps) & 0xFF
+
+        if key == ord("z"):
+            canvas.undo()
 
     # Close the window upon exiting application loop
     cv2.destroyWindow(title)

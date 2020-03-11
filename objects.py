@@ -1,5 +1,5 @@
 from drawing import draw_line, write_text
-from numpy import full, uint8
+from numpy import full, uint8, array
 from file_handler import open_file, save_file
 import cv2
 
@@ -23,10 +23,13 @@ class Canvas:
         self.x, self.y = x, y
         self.width, self.height = width, height
         self.canvas = full((height, width, 3), (255, 255, 255), dtype=uint8)
+        self.history = []
 
     # Detect mouse clicks and allow user to draw
     def update(self, x, y, clicked):
-        if clicked and Mouse.x is not None:
+        if Mouse.press:
+            self.history.append(array(self.canvas))
+        elif clicked and Mouse.x is not None:
             draw_line(self.canvas, Mouse.x - self.x, Mouse.y - self.y, x - self.x, y - self.y, Mouse.cursor_size, Mouse.color)
 
     # Draw this object on screen
@@ -47,6 +50,14 @@ class Canvas:
         height, width, _ = new_image.shape
         self.height, self.width = height, width
         self.canvas = new_image
+
+    # Undo last stroke
+    def undo(self):
+        if len(self.history) != 0:
+            self.canvas = self.history[-1]
+            self.history.pop(-1)
+        else:
+            self.canvas[:] = (255, 255, 255)
 
 
 """
@@ -74,6 +85,9 @@ class Button:
         write_text(canvas, self.text, self.x + int((self.width // len(self.text)) - 1.6 * len(self.text)), self.y  + int(1.5 * (self.height // 2)) , self.text_size, 1)
 
 
+"""
+A clickable object representing a color.
+"""
 class ColorButton:
     def __init__(self, x, y, width, height,color, function):
         self.x, self.y = x, y
@@ -98,7 +112,7 @@ class CurrentColor:
         self.x, self.y = x, y
         self.width, self.height = width, height
         self.mouse_hover = False
-        self.color = (0, 0, 0)  # Color mouse is moved
+        self.color = Mouse.color
 
     # Execute function on click.
     def update(self, x, y, clicked):
