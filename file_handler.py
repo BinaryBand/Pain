@@ -22,7 +22,7 @@ def set_file_location():
 """
 Open an image file from specified location.
 """
-def open_file(_):
+def open_file():
     location = get_file_location()
 
     if location is not None:

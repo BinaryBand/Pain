@@ -41,6 +41,12 @@ class Canvas:
     def export(self):
         save_file(self.canvas)
 
+    def load(self):
+        new_image = open_file()
+        height, width, _ = new_image.shape
+        self.height, self.width = height, width
+        self.canvas = new_image
+
 
 """
 A clickable object.
@@ -84,7 +90,8 @@ class Color_Button:
     def draw(self, canvas):
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.color
 
-class Current_Color:
+
+class CurrentColor:
     def __init__(self, x, y, width, height):
         self.x, self.y = x, y
         self.width, self.height = width, height
