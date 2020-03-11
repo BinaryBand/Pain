@@ -64,7 +64,7 @@ class Button:
     # Draw button on screen.
     def draw(self, canvas):
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (200, 200, 200) if self.mouse_hover else (250, 250, 250)
-        write_text(canvas, self.text, self.x + int((self.width // len(self.text)) - 1.6 * len(self.text)), self.y  + int(1.5 * (self.height // 2)) , self.text_size, 2)
+        write_text(canvas, self.text, self.x + int((self.width // len(self.text)) - 1.6 * len(self.text)), self.y  + int(1.5 * (self.height // 2)) , self.text_size, 1)
 
 class Color_Button:
     def __init__(self, x, y, width, height,color, function):
@@ -142,11 +142,14 @@ class Drop_down:
             if self.mouse_select and Mouse.press:
                 index = ((self.M_y - (self.y + self.height))//self.height)
                 self.function(index)
+
                 #set the picked item in the list to current_item
                 self.current_item = self.item_list[index]
                 self.clicked = False
+
                 #remove the drop down menu
                 canvas[self.y:self.y + (self.height * (len(self.item_list) + 1)),self.x:self.x + self.width] = (220,210,210)
+
             #if the mouse clicks outside the dropdown menu don't do anything and remove the dropdown
             elif not self.mouse_select and Mouse.press:
                 self.clicked = False

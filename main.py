@@ -24,7 +24,7 @@ def populate_frame():
     elements = []
     elements.append(canvas)
     elements.append(Menu_bar(canvas))
-    
+
     # elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
     elements.append(Button(10, 10, 50, 25, "Save", 0.75, canvas.export))
     elements.append(Button(10, 40, 50, 25, "Load" , 0.75, None))
@@ -50,7 +50,6 @@ def populate_frame():
     
     #dropdown menu pencil size
     elements.append(Drop_down(80,10,70,20,["small","medium","large"], font_size, 0.5 ,canvas))
-
 
     #This object displays the currently selected color
     elements.append(Current_Color(180,10,35,35))
@@ -93,6 +92,9 @@ def main():
     # Application loop
     while True:
 
+        if cv2.getWindowProperty(title, 0) < 0:
+            print("close")
+
         for obj in elements:
             obj.draw(screen)
 
@@ -111,4 +113,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()    
+    main()
