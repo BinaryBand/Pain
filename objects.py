@@ -99,13 +99,68 @@ class Current_Color:
     def draw(self, canvas):
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.color
         write_text(canvas, "Color", self.x , self.y + self.height + 10 , 0.4, 2)
+
+
 """
+DropDown Menu
+A menu that drops down with options when clicked on
+"""
+class Drop_down:
+    def __init__(self,x,y,width,height,item_list,function, text_size , canvas):
+        self.x, self.y = x, y
+        self.canvas = canvas
+        self.width, self.height = width,height
+        self.item_list = item_list
+        self.function = function
+        self.current_item = item_list[0]
+        self.clicked = False
+        self.mouse_hover = False
+        self.mouse_select = False
+        self.text_size = text_size
+
+    def draw(self, canvas):
+        #no drop down when not clicked
+        if self.clicked is False:
+            canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (250, 250, 250) if self.mouse_hover else (200, 200, 200)
+            write_text(canvas, self.current_item, self.x , self.y + self.height // 2 , self.text_size, 2)
+        #draw dropdown menu when button is clicked
+        if self.clicked is True:
+            offset = 1
+            canvas[self.y + self.height :self.y + (self.height * (len(self.item_list) + 1)),self.x:self.x + self.width] = (200,200,200)
+            for items in self.item_list:
+                write_text(canvas, items, self.x + 4, self.y + ((offset + 1) * self.height) - self.height//2 , self.text_size, 2)
+                offset += 1
+            self.mouse_select = self.x < self.M_x < self.x + self.width and self.y < self.M_y < self.y + (self.height * (len(self.item_list) + 1))
+            #if the mouse is clicked in the dropdown menu. execute the function
+            if self.mouse_select and Mouse.press:
+                index = ((self.M_y - (self.y + self.height))//self.height)
+                self.function(index)
+                self.current_item = self.item_list[index]
+                self.clicked = False
+                canvas[self.y:self.y + (self.height * (len(self.item_list) + 1)),self.x:self.x + self.width] = (220,220,220)
+            elif not self.mouse_select and Mouse.press:
+                self.clicked = False
+                canvas[self.y:self.y + (self.height * (len(self.item_list) + 1)),self.x:self.x + self.width] = (220,220,220)
+
+    def update(self,x,y,clicked):
+        self.mouse_hover = self.x < x < self.x + self.width and self.y < y < self.y + self.height
+        if self.mouse_hover and Mouse.press:
+            self.clicked = True
+        self.M_x = x
+        self.M_y = y
+            #loop through items in list and create dropdown menu
+
+
+
+
+"""
+Menu_bar
 A menu Object to hold clickable objects
 """
 class Menu_bar:
-    def __init__(self,x,y, width, height):
-        self.x, self.y = x, y
-        self.width, self.height = width, height
+    def __init__(self,canvas):
+        self.x, self.y = 0, 0
+        self.width, self.height = canvas.width, 70
 
     def draw(self, canvas):
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (220,220,220)
