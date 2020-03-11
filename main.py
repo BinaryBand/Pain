@@ -1,7 +1,13 @@
 import cv2
-from objects import Mouse, Canvas, Button
+from objects import Mouse, Canvas, Button, Menu_bar,Color_Button,Current_Color
 from numpy import full, uint8
 
+
+"""
+Change mouse Color to new color.
+"""
+def set_color(color):
+    Mouse.color = color
 
 """
 Add objects to screen
@@ -10,11 +16,35 @@ def populate_frame():
 
     # Create elements to place on the screen
     canvas = Canvas(0, 70, 640, 410)
-
+    # Button(x,y,width,height,text,texsize,function)
     elements = []
     elements.append(canvas)
-    elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
-    elements.append(Button(120, 10, 100, 50, "Export", canvas.export))
+    elements.append(Menu_bar(0,0,canvas.width, 70))
+    # elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
+    elements.append(Button(10, 10, 50, 25, "Save", 0.75, canvas.export))
+    elements.append(Button(10, 40, 50, 25, "Load" , 0.75, None))
+
+    # color pallet default set (BGR)
+    # Color_Button(x,y,width,height,color,function)  
+    elements.append(Color_Button(230,30,15,15,(255,255,255), set_color))    #Black
+    elements.append(Color_Button(230,10,15,15,(0,0,0),set_color))           #White
+    elements.append(Color_Button(250,30,15,15,(200,200,200),set_color))     #DarkGray
+    elements.append(Color_Button(250,10,15,15,(0,0,128),set_color))         #DarkRed
+    elements.append(Color_Button(270,30,15,15,(64,64,128),set_color))       #Brown
+    elements.append(Color_Button(270,10,15,15,(0,0,255),set_color))         #Red
+    elements.append(Color_Button(290,30,15,15,(128,128,255),set_color))     #Pink
+    elements.append(Color_Button(290,10,15,15,(0,128,255),set_color))       #Orange
+    elements.append(Color_Button(310,30,15,15,(128,255,255),set_color))     #Gold
+    elements.append(Color_Button(310,10,15,15,(0,255,255),set_color))       #Yellow
+    elements.append(Color_Button(330,30,15,15,(64,128,255),set_color))      #Tan
+    elements.append(Color_Button(330,10,15,15,(0,255,0),set_color))         #Green
+    elements.append(Color_Button(350,30,15,15,(0,255,128),set_color))       #Lime
+    elements.append(Color_Button(350,10,15,15,(255,0,0),set_color))         #Blue
+    elements.append(Color_Button(370,30,15,15,(255,255,0),set_color))       #Light Blue
+    elements.append(Color_Button(370,10,15,15,(160,0,0),set_color))         #Dark Blue
+
+    #This object displays the currently selected color
+    elements.append(Current_Color(180,10,35,35))
 
     return elements
 

@@ -1,6 +1,7 @@
 from drawing import draw_line, write_text
 from numpy import full, uint8
 from file_handler import open_file, save_file
+import cv2
 
 
 """
@@ -44,12 +45,13 @@ class Canvas:
 A clickable object.
 """
 class Button:
-    def __init__(self, x, y, width, height, text, function):
+    def __init__(self, x, y, width, height, text, text_size, function):
         self.x, self.y = x, y
         self.width, self.height = width, height
         self.mouse_hover = False
         self.text = text
         self.function = function
+        self.text_size = text_size
 
     # Execute function on click.
     def update(self, x, y, clicked):
@@ -60,5 +62,55 @@ class Button:
 
     # Draw button on screen.
     def draw(self, canvas):
-        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (250, 250, 250) if self.mouse_hover else (225, 225, 225)
-        write_text(canvas, self.text, self.x, self.y + 24, 0.75, 1)
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (250, 250, 250) if self.mouse_hover else (200, 200, 200)
+        write_text(canvas, self.text, self.x + int((self.width // len(self.text)) - 1.6 * len(self.text)), self.y  + int(1.5 * (self.height // 2)) , self.text_size, 1)
+
+class Color_Button:
+    def __init__(self, x, y, width, height,color, function):
+        self.x, self.y = x, y
+        self.width, self.height = width, height
+        self.mouse_hover = False
+        self.color = color
+        self.function = function
+
+    # Execute function on click.
+    def update(self, x, y, clicked):
+        self.mouse_hover = self.x < x < self.x + self.width and self.y < y < self.y + self.height
+        if self.mouse_hover and Mouse.press:
+            self.function(self.color)
+
+    # Draw button on screen.
+    def draw(self, canvas):
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.color
+
+class Current_Color:
+    def __init__(self, x, y, width, height):
+        self.x, self.y = x, y
+        self.width, self.height = width, height
+        self.mouse_hover = False
+        self.color = (255,255,255)
+
+    # Execute function on click.
+    def update(self, x, y, clicked):
+        self.color = Mouse.color
+
+    # Draw Element on screen.
+    def draw(self, canvas):
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.color
+        write_text(canvas, "Color", self.x , self.y + self.height + 10 , 0.4, 1)
+
+
+"""
+A menu Object to hold clickable objects
+"""
+class Menu_bar:
+    def __init__(self,x,y, width, height):
+        self.x, self.y = x, y
+        self.width, self.height = width, height
+
+    def draw(self, canvas):
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (220,220,220)
+
+    def update(self,x,y,clicked):
+        if self.width != cv2.WINDOW_NORMAL:
+            self.width = cv2.WINDOW_NORMAL
