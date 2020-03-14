@@ -81,6 +81,7 @@ class Button:
 
     # Draw button on screen.
     def draw(self, canvas):
+        canvas[self.y - 1:self.y+self.height + 1, self.x - 1:self.x+self.width + 1] = [100,100,100]
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (200, 200, 200) if self.mouse_hover else (250, 250, 250)
         write_text(canvas, self.text, self.x + int((self.width // len(self.text)) - 1.6 * len(self.text)), self.y  + int(1.5 * (self.height // 2)) , self.text_size, 1)
 
@@ -100,7 +101,8 @@ class ColorButton:
 
     # Draw button on screen.
     def draw(self, canvas):
-        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.color
+        canvas[self.y - 1:self.y+self.height + 1, self.x - 1:self.x+self.width + 1] = [100,100,100]
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.color 
 
 
 class CurrentColor:
@@ -116,7 +118,8 @@ class CurrentColor:
 
     # Draw Element on screen.
     def draw(self, canvas):
-        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.color
+        canvas[self.y - 1:self.y+self.height + 1, self.x - 1:self.x+self.width + 1] = [100,100,100]
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.color 
         write_text(canvas, "Color", self.x , self.y + self.height + 10 , 0.5, 1)
 
 
@@ -139,15 +142,18 @@ class DropDown:
 
     def draw(self, canvas):
         # Don't display drop down when not clicked
+        canvas[self.y - 1:self.y+self.height + 1, self.x - 1:self.x+self.width + 1] = [100,100,100]
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (230, 230, 230) if self.mouse_hover else (250, 250, 250)
         write_text(canvas, self.current_item, self.x , self.y + self.height // 2  + 4, self.text_size, 1)
         
         # Draw dropdown arrow
+        canvas[self.y - 1:self.y+self.height + 1, self.x + self.width - 1:self.x + self.width + 21] = [100,100,100]
         canvas[self.y:self.y+self.height, self.x + self.width:self.x + self.width + 20] = (210, 210, 210) if self.mouse_hover else (180, 180, 180)
         write_text(canvas, "V",self.x + self.width + 6,self.y + self.height // 2  + 5, self.text_size, 2)
         
         # Display dropdown menu when button is clicked
         if self.clicked is True:
+            canvas[self.y - 1:self.y+self.height + 1, self.x - 1:self.x+self.width + 1] = [100,100,100]
             canvas[self.y + self.height :self.y + (self.height * (len(self.item_list) + 1)),self.x:self.x + self.width] = (200,200,200)
             
             for index, items in enumerate(self.item_list):
