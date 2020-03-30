@@ -143,11 +143,12 @@ DropDown Menu
 A menu that drops down with options when clicked on
 """
 class DropDown:
-    def __init__(self,x,y,width,height,item_list,function, text_size , canvas):
+    def __init__(self,x,y,width,height,item_list,color, function, text_size, canvas):
         self.x, self.y = x, y
         self.canvas = canvas
         self.width, self.height = width,height
         self.item_list = item_list
+        self.color = color
         self.function = function
         self.current_item = item_list[0]
         self.clicked = False
@@ -182,6 +183,7 @@ class DropDown:
             if self.mouse_select and Mouse.release:
                 index = ((Mouse.y - (self.y + self.height))//self.height)
                 self.function(index)
+                Mouse.color = self.color
 
                 #set the picked item in the list to current_item
                 self.current_item = self.item_list[index]
