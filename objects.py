@@ -1,8 +1,15 @@
 from drawing import draw_line, write_text
-from numpy import full, uint8, array
+from numpy import full, uint8, array, zeros, uint8, append
 from file_handler import open_file, save_file
 import cv2
 import numpy as np
+
+
+def resize(image, new_width, new_height):
+    new_canvas = full((new_height, new_width, 3), (255, 255, 255), dtype=uint8)
+    old_height, old_width, _ = image.shape
+    new_canvas[:old_height,:old_width] = image
+    return new_canvas
 
 
 """
@@ -28,26 +35,42 @@ class Canvas:
         self.history = []
         self.first = full((height, width, 3), (255, 255, 255), dtype=uint8)
         self.current = self.canvas
+
+        self.resize_x, self.resize_y = False, False
+        self.hover_x, self.hover_y = False, False
+
     # Detect mouse clicks and allow user to draw
     def update(self, x, y, clicked):
-        if(len(self.history) > 0):
-            self.canvas = self.history[-1]
-        if Mouse.press:
-            # check if the mouse clicked on the canvas or not
-            self.mouse_hover = self.x < x < self.x + self.width and self.y < y < self.y + self.height
-            if self.mouse_hover:
-                if(len(self.history) < 30):
-                    self.history.append(array(self.canvas))
-                else:
+        self.hover_x = self.width + self.x - 5 < Mouse.x < self.width + self.x + 5 if Mouse.x else False
+        self.hover_y = self.height + self.y - 5 < Mouse.y < self.height + self.y + 5 if Mouse.y else False
+
+        if Mouse.press or Mouse.release:
+            if self.hover_x: self.resize_x = Mouse.click
+            if self.hover_y: self.resize_y = Mouse.click
+
+        if self.resize_x or self.resize_y:
+            if self.resize_x: self.width = max(1, Mouse.x - self.x)     # Resize canvas width
+            if self.resize_y: self.height = max(1, Mouse.y - self.y)    # Resize canvas height
+        else:
+            if Mouse.press:
+                self.history.append(self.canvas)
+                if 30 < len(self.history):
                     self.history.pop(0)
-                    self.history.append(array(self.canvas))
-        elif clicked and Mouse.x is not None:
-            draw_line(self.canvas, Mouse.x - self.x, Mouse.y - self.y, x - self.x, y - self.y, Mouse.cursor_size, Mouse.color)
+                    self.first = self.history[0]
+            if clicked:
+                draw_line(self.canvas, Mouse.x - self.x, Mouse.y - self.y, x - self.x, y - self.y, Mouse.cursor_size, Mouse.color)
+
+        canvas_height, canvas_width, _ = self.canvas.shape
+        self.canvas = resize(self.canvas, max(self.width, canvas_width), max(self.height, canvas_height))
+
 
     # Draw this object on screen
     def draw(self, canvas):
-        canvas[self.y - 1: self.y + self.height + 1, self.x - 1: self.x + self.width + 1] = (0, 0, 0)   # Draw border
-        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.canvas                       # Draw image
+        # Draw border
+        canvas[self.y - 1: self.y + self.height + (3 if self.hover_y else 1), self.x - 1: self.x + self.width + (3 if self.hover_x else 1)] = (0, 0, 0)
+        
+        # Draw image
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.canvas[:self.height,:self.width]
 
     # Fill canvas with white
     def clear(self):
@@ -55,24 +78,28 @@ class Canvas:
 
     # Save image to local storage
     def export(self):
-        save_file(self.canvas)
+        save_file(self.canvas[:self.height,:self.width])
 
     def load(self):
         new_image = open_file()
         height, width, _ = new_image.shape
         self.height, self.width = height, width
         self.canvas = new_image
+        self.first = new_image
 
     def undo(self):
-        if len(self.history) > 0:
-            self.canvas = self.history[-1]
+        prev = None
+        if len(self.history) != 0:
+            prev = self.history[-1]
             self.history.pop(-1)
-            print(len(self.history))
         else:
-            self.canvas = np.copy(self.first)
-                
-
-
+            prev = np.copy(self.first)
+        
+        # Undo, resize if necessary
+        new_height, new_width, _ = self.canvas.shape
+        self.width, self.height = new_width, new_height
+        self.resize_x, self.resize_y, self.hover_x, self.hover_y = False, False, False, False
+        self.canvas = resize(prev, new_width, new_height)
 
 
 """
@@ -157,6 +184,11 @@ class DropDown:
         self.text_size = text_size
 
     def draw(self, canvas):
+        # Draw the container and text
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (230, 230, 230) if self.mouse_hover else (250, 250, 250)
+        write_text(canvas, self.current_item, self.x , self.y + self.height // 2  + 4, self.text_size, 1)
+        
+        # Draw the container and dropdown arrow
         # Don't display drop down when not clicked
         canvas[self.y - 1:self.y+self.height + 1, self.x - 1:self.x+self.width + 1] = [100,100,100]
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (230, 230, 230) if self.mouse_hover else (250, 250, 250)
@@ -172,8 +204,8 @@ class DropDown:
             canvas[self.y - 1:self.y+self.height + 1, self.x - 1:self.x+self.width + 1] = [100,100,100]
             canvas[self.y + self.height :self.y + (self.height * (len(self.item_list) + 1)),self.x:self.x + self.width] = (200,200,200)
             
+            # Write out the options in the dropdown menu
             for index, items in enumerate(self.item_list):
-                # write out the options in the dropdown menu
                 write_text(canvas, items, self.x + 4, self.y + ((index + 2) * self.height) - self.height//2  + 4, self.text_size, 1)
 
             #get the area for the dropdown menu.
@@ -254,12 +286,11 @@ class CanvasDropDown:
             if self.mouse_select and Mouse.release:
                 index = ((Mouse.y - (self.y + self.height))//self.height)
                 
-
                #remove the drop down menu
                 canvas[self.y:self.y + (self.height * (len(self.item_list) + 1)),self.x:self.x + self.width] = (220,210,210)
 
                 #includes canvas in the update
-                if(len(self.c_history) > 0):
+                if len(self.c_history) > 0:
                     draw_area = self.c_history[-1]
                 else:
                     draw_area = self.c_first

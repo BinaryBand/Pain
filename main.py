@@ -34,14 +34,13 @@ def image_blur(percent,canvas):
         canvas = cv2.blur(canvas,(2 * percent,2 * percent))
     return canvas
 
-
 """
 Add objects to screenzzzz
 """
 def populate_frame(width):
 
     # Create elements to place on the screen
-    canvas = Canvas(5, 75, 600, 400) ## must remain item 0 in OBJ array
+    canvas = Canvas(5, 75, 600, 390) # Must remain item 0 in OBJ array
 
     # Button(x,y,width,height,text,texsize,function)
     elements = []
@@ -50,10 +49,11 @@ def populate_frame(width):
 
     # Elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
     elements.append(Button(10, 10, 50, 25, "Save", 0.75, canvas.export))
-    elements.append(Button(10, 40, 50, 25, "Load" , 0.75, None))
+    elements.append(Button(10, 40, 50, 25, "Load" , 0.75, canvas.load))
     # elements.append(Button(550, 30, 50,25, "Undo" , 0.75, ))
 
     # Color pallet default set (BGR) 
+<<<<<<< HEAD
     elements.append(ColorButton(230, 30, 15, 15, (255, 255, 255), set_color))    # Black
     elements.append(ColorButton(250, 30, 15, 15, (200, 200, 200),set_color))     # DarkGray
     elements.append(ColorButton(250, 10, 15, 15, (0, 0, 128),set_color))         # DarkRed
@@ -69,6 +69,24 @@ def populate_frame(width):
     elements.append(ColorButton(350, 10, 15, 15, (255, 0, 0),set_color))         # Blue
     elements.append(ColorButton(370, 30, 15, 15, (255, 255, 0),set_color))       # Light Blue
     elements.append(ColorButton(370, 10, 15, 15, (160, 0, 0),set_color))         # Dark Blue
+=======
+    elements.append(ColorButton(230, 30, 15, 15, (255, 255, 255), set_color))   # Black
+    elements.append(ColorButton(230, 10, 15, 15, (0, 0, 0), set_color))         # White
+    elements.append(ColorButton(250, 30, 15, 15, (200, 200, 200), set_color))   # DarkGray
+    elements.append(ColorButton(250, 10, 15, 15, (0, 0, 128), set_color))       # DarkRed
+    elements.append(ColorButton(270, 30, 15, 15, (64, 64, 128), set_color))     # Brown
+    elements.append(ColorButton(270, 10, 15, 15, (0, 0, 255), set_color))       # Red
+    elements.append(ColorButton(290, 30, 15, 15, (128, 128, 255), set_color))   # Pink
+    elements.append(ColorButton(290, 10, 15, 15, (0, 128, 255), set_color))     # Orange
+    elements.append(ColorButton(310, 30, 15, 15, (128, 255, 255), set_color))   # Gold
+    elements.append(ColorButton(310, 10, 15, 15, (0, 255, 255), set_color))     # Yellow
+    elements.append(ColorButton(330, 30, 15, 15, (64, 128, 255), set_color))    # Tan
+    elements.append(ColorButton(330, 10, 15, 15, (0, 255, 0), set_color))       # Green
+    elements.append(ColorButton(350, 30, 15, 15, (0, 255, 128), set_color))     # Lime
+    elements.append(ColorButton(350, 10, 15, 15, (255, 0, 0), set_color))       # Blue
+    elements.append(ColorButton(370, 30, 15, 15, (255, 255, 0), set_color))     # Light Blue
+    elements.append(ColorButton(370, 10, 15, 15, (160, 0, 0), set_color))       # Dark Blue
+>>>>>>> 4edb4a66b4ef8ec8d078c88c97c4ee5038211cfe
     
     # elements.append(ColorButton(230, 10, 15, 15, "Eraser",set_color))           # White
     elements.append(Label(80, 0, 0.6, "Eraser"))
@@ -99,12 +117,11 @@ def populate_frame(width):
 
     return elements, canvas
 
+
 """
 Mouse callback function.
 """
-def mouse_event(event, x, y, flags, param):
-
-    elements, screen = param
+def mouse_event(event, x, y, flags, elements):
 
     for obj in elements:
         obj.update(x, y, flags == 1)
@@ -134,13 +151,14 @@ def main():
     title = "MacroSoup Pain"                                # Windows title
     fps = 30                                                # Frames per second
 
-    screen = full((480, 640, 3), (0, 0, 0), dtype=uint8)    # Frame to draw our object
-    cv2.namedWindow(title)                                  # Create a window
+    window_width, window_height = 640, 480
+    screen = full((window_height, window_width, 3), (0, 0, 0), dtype=uint8)     # Frame to draw our object
+    cv2.namedWindow(title)                                                      # Create a window
 
-    elements, canvas = populate_frame(635)
+    elements, canvas = populate_frame(window_width)
 
     # Execute the 'mouse_event' function each time a mouse event is detected
-    cv2.setMouseCallback(title, mouse_event, (elements, screen))
+    cv2.setMouseCallback(title, mouse_event, elements)
 
     draw(elements, screen)
 
@@ -157,7 +175,6 @@ def main():
 
         if key == ord("z"):
             canvas.undo()
-            draw(elements, screen)
 
     # Close the window upon exiting application loop
     cv2.destroyWindow(title)
