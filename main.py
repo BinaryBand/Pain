@@ -25,12 +25,12 @@ def image_saturation_green(percent,canvas):
     return canvas
 
 def image_saturation_blue(percent,canvas):
-    canvas[:, :, 1] = canvas[:,:,1] * ((10 - percent)/10)
-    canvas[:, :, 2] = canvas[:,:,2] * ((10 - percent)/10)
+    canvas[:, :, 1] = canvas[:,:,1] * ((10 - percent) / 10)
+    canvas[:, :, 2] = canvas[:,:,2] * ((10 - percent) / 10)
     return canvas
 
 def image_blur(percent,canvas):
-    if(percent > 0):
+    if percent > 0:
         canvas = cv2.blur(canvas,(2 * percent,2 * percent))
     return canvas
 
