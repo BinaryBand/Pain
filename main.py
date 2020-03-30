@@ -75,13 +75,13 @@ def populate_frame(width):
     elements.append(DropDown(80, 10, 70, 20, ["small", "medium", "large"], pencil_size, 0.6 ,canvas))
 
     # CanvasDropdown menu RGB saturation
-    elements.append(Label(449,0,0.6,"B#"))
-    elements.append(CanvasDropDown(444,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_saturation_blue, 0.5, canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current))
+    elements.append(Label(555,0,0.6,"B#"))
+    elements.append(CanvasDropDown(550,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_saturation_blue, 0.5, canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current))
     elements.append(Label(503,0,0.6,"G#"))
     elements.append(CanvasDropDown(498,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_saturation_green, 0.5, canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current))
-    elements.append(Label(555,0,0.6,"R#"))
-    elements.append(CanvasDropDown(550,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_saturation_red, 0.5,canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current))
-    
+    elements.append(Label(449,0,0.6,"R#"))
+    elements.append(CanvasDropDown(444,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_saturation_red, 0.5,canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current))
+    # 555 0, 550 15
     # CanvasDropdown menu ImageBlur
     elements.append(Label(393,0,0.6,"Blur"))
     elements.append(CanvasDropDown(390,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_blur, 0.5, canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current))
