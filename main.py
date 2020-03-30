@@ -9,8 +9,11 @@ Change mouse Color to new color.
 def set_color(color):
     Mouse.color = color
 
+
+
 def font_size(size):
     Mouse.cursor_size = size + 1
+
 
 """
 Add objects to screen
@@ -18,7 +21,7 @@ Add objects to screen
 def populate_frame(width):
 
     # Create elements to place on the screen
-    canvas = Canvas(5, 75, 600, 400) ## must remain item 0 in OBJ array
+    canvas = Canvas(5, 75, 600, 400) # Must remain item 0 in OBJ array
 
     # Button(x,y,width,height,text,texsize,function)
     elements = []
@@ -30,22 +33,22 @@ def populate_frame(width):
     elements.append(Button(10, 40, 50, 25, "Load" , 0.75, None))
 
     # Color pallet default set (BGR) 
-    elements.append(ColorButton(230, 30, 15, 15, (255, 255, 255), set_color))    # Black
-    elements.append(ColorButton(230, 10, 15, 15, (0, 0, 0),set_color))           # White
-    elements.append(ColorButton(250, 30, 15, 15, (200, 200, 200),set_color))     # DarkGray
-    elements.append(ColorButton(250, 10, 15, 15, (0, 0, 128),set_color))         # DarkRed
-    elements.append(ColorButton(270, 30, 15, 15, (64, 64, 128),set_color))       # Brown
-    elements.append(ColorButton(270, 10, 15, 15, (0, 0, 255),set_color))         # Red
-    elements.append(ColorButton(290, 30, 15, 15, (128, 128, 255),set_color))     # Pink
-    elements.append(ColorButton(290, 10, 15, 15, (0, 128, 255),set_color))       # Orange
-    elements.append(ColorButton(310, 30, 15, 15, (128, 255, 255),set_color))     # Gold
-    elements.append(ColorButton(310, 10, 15, 15, (0, 255, 255),set_color))       # Yellow
-    elements.append(ColorButton(330, 30, 15, 15, (64, 128, 255),set_color))      # Tan
-    elements.append(ColorButton(330, 10, 15, 15, (0, 255, 0),set_color))         # Green
-    elements.append(ColorButton(350, 30, 15, 15, (0, 255, 128),set_color))       # Lime
-    elements.append(ColorButton(350, 10, 15, 15, (255, 0, 0),set_color))         # Blue
-    elements.append(ColorButton(370, 30, 15, 15, (255, 255, 0),set_color))       # Light Blue
-    elements.append(ColorButton(370, 10, 15, 15, (160, 0, 0),set_color))         # Dark Blue
+    elements.append(ColorButton(230, 30, 15, 15, (255, 255, 255), set_color))   # Black
+    elements.append(ColorButton(230, 10, 15, 15, (0, 0, 0), set_color))         # White
+    elements.append(ColorButton(250, 30, 15, 15, (200, 200, 200), set_color))   # DarkGray
+    elements.append(ColorButton(250, 10, 15, 15, (0, 0, 128), set_color))       # DarkRed
+    elements.append(ColorButton(270, 30, 15, 15, (64, 64, 128), set_color))     # Brown
+    elements.append(ColorButton(270, 10, 15, 15, (0, 0, 255), set_color))       # Red
+    elements.append(ColorButton(290, 30, 15, 15, (128, 128, 255), set_color))   # Pink
+    elements.append(ColorButton(290, 10, 15, 15, (0, 128, 255), set_color))     # Orange
+    elements.append(ColorButton(310, 30, 15, 15, (128, 255, 255), set_color))   # Gold
+    elements.append(ColorButton(310, 10, 15, 15, (0, 255, 255), set_color))     # Yellow
+    elements.append(ColorButton(330, 30, 15, 15, (64, 128, 255), set_color))    # Tan
+    elements.append(ColorButton(330, 10, 15, 15, (0, 255, 0), set_color))       # Green
+    elements.append(ColorButton(350, 30, 15, 15, (0, 255, 128), set_color))     # Lime
+    elements.append(ColorButton(350, 10, 15, 15, (255, 0, 0), set_color))       # Blue
+    elements.append(ColorButton(370, 30, 15, 15, (255, 255, 0), set_color))     # Light Blue
+    elements.append(ColorButton(370, 10, 15, 15, (160, 0, 0), set_color))       # Dark Blue
     
     # Dropdown menu pencil size
     elements.append(DropDown(80, 10, 70, 20, ["small", "medium", "large"], font_size, 0.6 ,canvas))
@@ -59,9 +62,7 @@ def populate_frame(width):
 """
 Mouse callback function.
 """
-def mouse_event(event, x, y, flags, param):
-
-    elements, screen = param
+def mouse_event(event, x, y, flags, elements):
 
     for obj in elements:
         obj.update(x, y, flags == 1)
@@ -97,7 +98,7 @@ def main():
     elements, canvas = populate_frame(635)
 
     # Execute the 'mouse_event' function each time a mouse event is detected
-    cv2.setMouseCallback(title, mouse_event, (elements, screen))
+    cv2.setMouseCallback(title, mouse_event, elements)
 
     draw(elements, screen)
 

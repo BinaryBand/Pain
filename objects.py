@@ -1,5 +1,5 @@
 from drawing import draw_line, write_text
-from numpy import full, uint8, array
+from numpy import full, uint8, array, zeros, uint8, append
 from file_handler import open_file, save_file
 import cv2
 
@@ -24,19 +24,25 @@ class Canvas:
         self.x, self.y = x, y
         self.width, self.height = width, height
         self.canvas = full((height, width, 3), (255, 255, 255), dtype=uint8)
+        self.resize_x = False
         self.history = []
 
     # Detect mouse clicks and allow user to draw
     def update(self, x, y, clicked):
-        if Mouse.press:
-            self.history.append(array(self.canvas))
-        elif clicked and Mouse.x is not None:
-            draw_line(self.canvas, Mouse.x - self.x, Mouse.y - self.y, x - self.x, y - self.y, Mouse.cursor_size, Mouse.color)
+
+        if self.resize_x:
+            self.width = max(1, Mouse.x - self.x)
+        else:
+            if Mouse.press:
+                self.history.append(array(self.canvas))
+        
+            if clicked and Mouse.x is not None:
+                draw_line(self.canvas, Mouse.x - self.x, Mouse.y - self.y, x - self.x, y - self.y, Mouse.cursor_size, Mouse.color)
 
     # Draw this object on screen
     def draw(self, canvas):
         canvas[self.y - 1: self.y + self.height + 1, self.x - 1: self.x + self.width + 1] = (0, 0, 0)   # Draw border
-        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.canvas                       # Draw image
+        canvas[self.y:self.y+self.height, self.x:self.x+self.width] = self.canvas[:self.height,:self.width]                       # Draw image
 
     # Fill canvas with white
     def clear(self):
@@ -44,7 +50,7 @@ class Canvas:
 
     # Save image to local storage
     def export(self):
-        save_file(self.canvas)
+        save_file(self.canvas[:self.height,:self.width])
 
     def load(self):
         new_image = open_file()
@@ -138,11 +144,11 @@ class DropDown:
         self.text_size = text_size
 
     def draw(self, canvas):
-        # Don't display drop down when not clicked
+        # Draw the container and text
         canvas[self.y:self.y+self.height, self.x:self.x+self.width] = (230, 230, 230) if self.mouse_hover else (250, 250, 250)
         write_text(canvas, self.current_item, self.x , self.y + self.height // 2  + 4, self.text_size, 1)
         
-        # Draw dropdown arrow
+        # Draw the container and dropdown arrow
         canvas[self.y:self.y+self.height, self.x + self.width:self.x + self.width + 20] = (210, 210, 210) if self.mouse_hover else (180, 180, 180)
         write_text(canvas, "V",self.x + self.width + 6,self.y + self.height // 2  + 5, self.text_size, 2)
         
@@ -150,8 +156,8 @@ class DropDown:
         if self.clicked is True:
             canvas[self.y + self.height :self.y + (self.height * (len(self.item_list) + 1)),self.x:self.x + self.width] = (200,200,200)
             
+            # Write out the options in the dropdown menu
             for index, items in enumerate(self.item_list):
-                # write out the options in the dropdown menu
                 write_text(canvas, items, self.x + 4, self.y + ((index + 2) * self.height) - self.height//2  + 4, self.text_size, 1)
 
             #get the area for the dropdown menu.
