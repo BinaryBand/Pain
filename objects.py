@@ -43,7 +43,6 @@ class Canvas:
     def update(self, x, y, clicked):
         self.hover_x = self.width + self.x - 5 < Mouse.x < self.width + self.x + 5 if Mouse.x else False
         self.hover_y = self.height + self.y - 5 < Mouse.y < self.height + self.y + 5 if Mouse.y else False
-
         if Mouse.press or Mouse.release:
             if self.hover_x: self.resize_x = Mouse.click
             if self.hover_y: self.resize_y = Mouse.click
@@ -100,6 +99,7 @@ class Canvas:
         self.width, self.height = new_width, new_height
         self.resize_x, self.resize_y, self.hover_x, self.hover_y = False, False, False, False
         self.canvas = resize(prev, new_width, new_height)
+        self.update(0,0,False)
 
 
 """
@@ -235,7 +235,7 @@ class DropDown:
 
 # a dropdown menu that allows edits to the canvas
 class CanvasDropDown:
-    def __init__(self,x,y,width,height,item_list,function, text_size ,c_history, c_draw, cx, cy, c_width,c_height, c_first, c_current):
+    def __init__(self,x,y,width,height,item_list,function, text_size ,c_history, c_update, cx, cy, c_width,c_height, c_first, c_canvas, canvas):
         # information about dropdown menu
         self.x, self.y = x, y
         self.width, self.height = width,height
@@ -251,11 +251,13 @@ class CanvasDropDown:
         self.cx = cx
         self.cy = cy
         self.c_history = c_history
-        self.c_draw = c_draw
+        self.c_update = c_update
         self.c_width = c_width
         self.c_height = c_height
         self.c_first = c_first
-        self.c_current = c_current
+        self.c_canvas = c_canvas
+
+        self.canvas = canvas
 
     def draw(self, canvas):
 
@@ -293,13 +295,7 @@ class CanvasDropDown:
                 else:
                     draw_area = self.c_first
 
-                check = self.function(index,draw_area)
-                self.c_history.append(array(check))
-                self.c_current = check
-
-                #set the picked item in the list to current_item
-                self.current_item = self.item_list[index]
-                self.clicked = False
+                self.function(index, self.canvas)
 
             #if the mouse clicks outside the dropdown menu don't do anything and remove the dropdown
             elif not self.mouse_select and Mouse.release:
