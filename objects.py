@@ -237,7 +237,7 @@ class DropDown:
 
 # a dropdown menu that allows edits to the canvas
 class CanvasDropDown:
-    def __init__(self,x,y,width,height,item_list,function, text_size ,c_history, c_update, cx, cy, c_width,c_height, c_first, c_canvas, canvas):
+    def __init__(self,x,y,width,height,item_list,function, text_size , canvas):
         # information about dropdown menu
         self.x, self.y = x, y
         self.width, self.height = width,height
@@ -250,17 +250,6 @@ class CanvasDropDown:
         self.text_size = text_size
 
         # information about the draw area
-        self.cx = cx
-        self.cy = cy
-        self.c_history = c_history
-        self.c_update = c_update
-        self.c_width = c_width
-        self.c_height = c_height
-        self.c_first = c_first
-        self.c_canvas = c_canvas
-
-        self.canvas = canvas
-
         self.canvas = canvas
 
     def draw(self, canvas):
@@ -294,12 +283,8 @@ class CanvasDropDown:
                 canvas[self.y:self.y + (self.height * (len(self.item_list) + 1)),self.x:self.x + self.width] = (220,210,210)
 
                 #includes canvas in the update
-                if len(self.c_history) > 0:
-                    draw_area = self.c_history[-1]
-                else:
-                    draw_area = self.c_first
-
                 self.function(index, self.canvas)
+                self.clicked = False
 
             #if the mouse clicks outside the dropdown menu don't do anything and remove the dropdown
             elif not self.mouse_select and Mouse.release:
