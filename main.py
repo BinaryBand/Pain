@@ -14,10 +14,9 @@ def set_color(color):
 def pencil_size(size):
     Mouse.cursor_size = size + 1
 
-def image_saturation_red(percent,canvas):
-    canvas[:, :, 0] = canvas[:,:,0] * ((10 - percent)/10)
-    canvas[:, :, 1] = canvas[:,:,1] * ((10 - percent)/10)
-    return canvas
+def image_saturation_red(percent, canvas, canvas_class):
+    new_image = canvas[:,:,0] * ((10 - percent)/10)
+    canvas_class.canvas =new_image
 
 def image_saturation_green(percent,canvas):
     canvas[:, :, 0] = canvas[:,:,0] * ((10 - percent)/10)
@@ -70,7 +69,7 @@ def populate_frame(width):
     elements.append(ColorButton(370, 30, 15, 15, (255, 255, 0), set_color))     # Light Blue
     elements.append(ColorButton(370, 10, 15, 15, (160, 0, 0), set_color))       # Dark Blue
     
-    # elements.append(ColorButton(230, 10, 15, 15, "Eraser",set_color))           # White
+    # elements.append(ColorButton(230, 10, 15, 15, "Eraser",set_color))         # White
     elements.append(Label(80, 0, 0.6, "Eraser"))
     elements.append(DropDown(80, 15, 70, 20, ["small", "medium", "large"], (255,255,255), pencil_size, 0.6 ,canvas))
 
@@ -84,15 +83,15 @@ def populate_frame(width):
 
     # CanvasDropdown menu RGB saturation
     elements.append(Label(555,0,0.6,"B#"))
-    elements.append(CanvasDropDown(550,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_saturation_blue, 0.5, canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current))
+    elements.append(CanvasDropDown(550,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_saturation_blue, 0.5, canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current, canvas))
     elements.append(Label(503,0,0.6,"G#"))
-    elements.append(CanvasDropDown(498,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_saturation_green, 0.5, canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current))
+    elements.append(CanvasDropDown(498,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_saturation_green, 0.5, canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current, canvas))
     elements.append(Label(449,0,0.6,"R#"))
-    elements.append(CanvasDropDown(444,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_saturation_red, 0.5,canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current))
+    elements.append(CanvasDropDown(444,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_saturation_red, 0.5,canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current, canvas))
     # 555 0, 550 15
     # CanvasDropdown menu ImageBlur
     elements.append(Label(393,0,0.6,"Blur"))
-    elements.append(CanvasDropDown(390,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_blur, 0.5, canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current))
+    elements.append(CanvasDropDown(390,15,30,18, ["0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"], image_blur, 0.5, canvas.history, canvas.draw, canvas.x, canvas.y, canvas.width, canvas.height, canvas.first, canvas.current, canvas))
 
     # This object displays the currently selected color
     elements.append(CurrentColor(180, 10, 35, 35))

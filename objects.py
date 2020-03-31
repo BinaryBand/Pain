@@ -237,7 +237,7 @@ class DropDown:
 
 # a dropdown menu that allows edits to the canvas
 class CanvasDropDown:
-    def __init__(self,x,y,width,height,item_list,function, text_size ,c_history, c_draw, cx, cy, c_width,c_height, c_first, c_current):
+    def __init__(self,x,y,width,height,item_list,function, text_size ,c_history, c_draw, cx, cy, c_width, c_height, c_first, c_current, canvas):
         # information about dropdown menu
         self.x, self.y = x, y
         self.width, self.height = width,height
@@ -258,6 +258,8 @@ class CanvasDropDown:
         self.c_height = c_height
         self.c_first = c_first
         self.c_current = c_current
+
+        self.canvas = canvas
 
     def draw(self, canvas):
 
@@ -295,7 +297,7 @@ class CanvasDropDown:
                 else:
                     draw_area = self.c_first
 
-                check = self.function(index,draw_area)
+                check = self.function(index, draw_area)
                 self.c_history.append(array(check))
                 self.c_current = check
 
