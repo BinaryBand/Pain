@@ -4,7 +4,6 @@ from objects import Mouse, Canvas, Button, MenuBar, ColorButton, CurrentColor, D
 from numpy import full, uint8
 
 
-
 """
 Change mouse Color to new color.
 """
@@ -14,7 +13,6 @@ def set_color(color):
 def pencil_size(size):
     Mouse.cursor_size = size + 1
 
-<<<<<<< HEAD
 def image_saturation_red(percent, canvas_class):
     new_image = np.copy(canvas_class.canvas)
     new_image[:, :, 0] = canvas_class.canvas[:,:,0] * ((10 - percent)/10)
@@ -37,27 +35,6 @@ def image_blur(percent,canvas_class):
     if percent > 0:
         new_image = cv2.blur(canvas_class.canvas,(2 * percent,2 * percent))
         canvas_class.canvas = new_image
-=======
-def image_saturation_red(percent,canvas):
-    canvas[:, :, 0] = canvas[:,:,0] * ((10 - percent)/10)
-    canvas[:, :, 1] = canvas[:,:,1] * ((10 - percent)/10)
-    return canvas
-
-def image_saturation_green(percent,canvas):
-    canvas[:, :, 0] = canvas[:,:,0] * ((10 - percent)/10)
-    canvas[:, :, 2] = canvas[:,:,2] * ((10 - percent)/10)
-    return canvas
-
-def image_saturation_blue(percent,canvas):
-    canvas[:, :, 1] = canvas[:,:,1] * ((10 - percent) / 10)
-    canvas[:, :, 2] = canvas[:,:,2] * ((10 - percent) / 10)
-    return canvas
-
-def image_blur(percent,canvas):
-    if percent > 0:
-        canvas = cv2.blur(canvas,(2 * percent,2 * percent))
-    return canvas
->>>>>>> refs/remotes/origin/master
 
 """
 Add objects to screenzzzz
@@ -95,17 +72,8 @@ def populate_frame(width):
     elements.append(ColorButton(370, 30, 15, 15, (255, 255, 0), set_color))     # Light Blue
     elements.append(ColorButton(370, 10, 15, 15, (160, 0, 0), set_color))       # Dark Blue
     
-    # elements.append(ColorButton(230, 10, 15, 15, "Eraser",set_color))           # White
-    elements.append(Label(80, 0, 0.6, "Eraser"))
-    elements.append(DropDown(80, 15, 70, 20, ["small", "medium", "large"], (255,255,255), pencil_size, 0.6 ,canvas))
-
-
     # Dropdown menu pencil size
-    elements.append(Label(250, 50, 0.6, "Pen size"))
-    elements.append(DropDown(300, 50, 70, 20, ["small", "medium", "large"], Mouse.color, pencil_size, 0.6 ,canvas))
-    # elements.append(DropDown(80, 10, 70, 20, ["small", "medium", "large"], pencil_size, 0.6 ,canvas))
-    # elements.append(DropDown(80, 10, 70, 20, ["small", "medium", "large"], pencil_size, 0.6 ,canvas))
-    # elements.append(DropDown(80, 10, 70, 20, ["small", "medium", "large"], pencil_size, 0.6 ,canvas))
+    elements.append(DropDown(80, 10, 70, 20, ["small", "medium", "large"],(255,255,255) ,pencil_size, 0.6 ,canvas))
 
     # CanvasDropdown menu RGB saturation
     elements.append(Label(555,0,0.6,"B#"))
