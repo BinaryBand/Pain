@@ -1,4 +1,5 @@
 from cv2 import imread, imwrite
+from numpy import zeros, uint
 import tkinter as tk
 tk.Tk().withdraw()
 from tkinter.filedialog import askopenfilename, asksaveasfile
@@ -26,7 +27,9 @@ def open_file():
     location = get_file_location()
 
     if location is not None:
-        return imread(location)
+        imported_image = imread(location)
+        height, width, _ = imported_image.shape
+        return imported_image[:min(height, 400),:min(width, 630),:]
 
 
 """

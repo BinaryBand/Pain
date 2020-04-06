@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from objects import Mouse, Canvas, Button, MenuBar, ColorButton, CurrentColor, DropDown, CanvasDropDown, Label
+from objects import Mouse, Canvas, Button, MenuBar, ColorButton, CurrentColor, DropDown, CanvasDropDown, Label, Cursor
 from numpy import full, uint8
 
 
@@ -8,10 +8,15 @@ from numpy import full, uint8
 Change mouse Color to new color.
 """
 def set_color(color):
+    if Mouse.color == (255, 255, 255): Mouse.cursor_size = 1
     Mouse.color = color
 
 def pencil_size(size):
     Mouse.cursor_size = size + 1
+
+def set_erase():
+    set_color((255, 255, 255))
+    pencil_size(40)
 
 def image_saturation_red(percent, canvas_class):
     new_image = np.copy(canvas_class.canvas)
@@ -50,9 +55,11 @@ def populate_frame(width):
     elements.append(MenuBar(canvas, width))
 
     # Elements.append(Button(10, 10, 100, 50, "Clear", canvas.clear))
-    elements.append(Button(10, 10, 50, 25, "Save", 0.75, canvas.export))
-    elements.append(Button(10, 40, 50, 25, "Load" , 0.75, canvas.load))
-    # elements.append(Button(550, 30, 50,25, "Undo" , 0.75, ))
+    elements.append(Button(10, 10, 55, 17, "Save", 0.6, canvas.export))
+    elements.append(Button(10, 30, 55, 17, "Load" , 0.6, canvas.load))
+    elements.append(Button(10, 50, 55, 17, "Eraser", 0.6, set_erase))
+
+    elements.append(Cursor())
 
     # Color pallet default set (BGR) 
     elements.append(ColorButton(230, 30, 15, 15, (255, 255, 255), set_color))   # Black
@@ -73,7 +80,7 @@ def populate_frame(width):
     elements.append(ColorButton(370, 10, 15, 15, (160, 0, 0), set_color))       # Dark Blue
     
     # elements.append(ColorButton(230, 10, 15, 15, "Eraser",set_color))         # White
-    elements.append(Label(80, 0, 0.6, "Eraser"))
+    # x, y, width, height, text, text_size, function):
     # Dropdown menu pencil size
     elements.append(DropDown(80, 10, 70, 20, ["small", "medium", "large"],(255,255,255) ,pencil_size, 0.6 ,canvas))
 

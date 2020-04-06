@@ -48,8 +48,8 @@ class Canvas:
             if self.hover_y: self.resize_y = Mouse.click
 
         if self.resize_x or self.resize_y:
-            if self.resize_x: self.width = max(1, Mouse.x - self.x)     # Resize canvas width
-            if self.resize_y: self.height = max(1, Mouse.y - self.y)    # Resize canvas height
+            if self.resize_x: self.width = min(max(1, Mouse.x - self.x), 630)     # Resize canvas width
+            if self.resize_y: self.height = min(max(1, Mouse.y - self.y), 400)    # Resize canvas height
         else:
             if Mouse.press:
                 self.history.append(self.canvas)
@@ -215,7 +215,6 @@ class DropDown:
             if self.mouse_select and Mouse.release:
                 index = ((Mouse.y - (self.y + self.height))//self.height)
                 self.function(index)
-                Mouse.color = self.color
 
                 #set the picked item in the list to current_item
                 self.current_item = self.item_list[index]
@@ -327,3 +326,20 @@ class MenuBar:
 
     def update(self, x, y, clicked):
         pass
+
+
+"""
+Shows the mouse position and cursor size
+"""
+class Cursor:
+    def __init__(self):
+        self.x = Mouse.x
+        self.y = Mouse.y
+
+    def update(self, x, y, _):
+        self.x = x
+        self.y = y
+
+    def draw(self, canvas):
+        if self.x and Mouse.color == (255, 255, 255):
+            cv2.circle(canvas, (self.x, self.y), Mouse.cursor_size // 2, (50, 50, 50), 1)
