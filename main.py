@@ -160,6 +160,8 @@ def main():
 
         if key == ord("z"):
             canvas.undo()
+        elif key == ord("c"):
+            canvas.clear()
 
     # Close the window upon exiting application loop
     cv2.destroyWindow(title)

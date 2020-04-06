@@ -341,5 +341,5 @@ class Cursor:
         self.y = y
 
     def draw(self, canvas):
-        if self.x and Mouse.color == (255, 255, 255):
+        if self.x:
             cv2.circle(canvas, (self.x, self.y), Mouse.cursor_size // 2, (50, 50, 50), 1)

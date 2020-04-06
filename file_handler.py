@@ -1,4 +1,4 @@
-from cv2 import imread, imwrite
+from cv2 import imread, imwrite, resize
 from numpy import zeros, uint
 import tkinter as tk
 tk.Tk().withdraw()
@@ -28,6 +28,14 @@ def open_file():
 
     if location is not None:
         imported_image = imread(location)
+        height, width, _ = imported_image.shape
+        
+        if height > 400 or width > 630:
+            scale = min(400 / height, 630 / width)
+
+        return resize(imported_image, None, fx=scale, fy=scale)
+
+
         height, width, _ = imported_image.shape
         return imported_image[:min(height, 400),:min(width, 630),:]
 
